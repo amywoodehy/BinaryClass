@@ -1,5 +1,4 @@
-__doc__ = 
-"""
+__doc__ = """
 
 """
 
@@ -16,14 +15,39 @@ def decToBin(value):
 
 def binToDec(value):
     binary = value[1:]
-
-    pass
+    binary = binary[::-1]
+    decimal = 0
+    p = 0
+    for x in binary:
+        if x == "1":
+            decimal = decimal + 2**p
+        p = p + 1
+    if value[0] == "1":
+        decimal = -decimal
+    return decimal
 
 def binToBin(value):
-    
-    pass
+    binary = ""
+    base = 0
+    ls = []
+    for x in value:
+        if x not in ls:
+            base = base + 1
+            ls.append(x)
+    if base != 2:
+        raise ValueError
+    else:
+        for x in value:
+            if x == ls[0]:
+                binary = binary + "1"
+            else:
+                binary = binary + "0"
+    return binary
 
 def eqlen(value1, value2):
+    """
+
+    """
     if len(value1) != len(value2):
         if len(value1) > len(value2):
             value2.fill(len(value1))
@@ -34,7 +58,7 @@ class BinWord(object):
     """
     
     """
-    def __init__(self, value,  is_bin = False):
+    def __init__(self, value, is_bin = False):
         if is_bin:
             self.bin = binToBin(value)
             self.dec = binToDec(self.bin)
@@ -92,7 +116,7 @@ class BinWord(object):
         """
         called in print() and in str()
         """
-        return self.bin
+        return "dec: "+str(self.dec)+", bin: "+self.bin
 
     def __setitem__(self, where, what):
         if what in (0, 1):
@@ -108,11 +132,8 @@ class BinWord(object):
           & 01010
           = 01000
         """
-        if len(self) != len(value):
-            if len(self) > len(value):
-                value.fill(len(self))
-            else:
-                self.fill(len(value))
+        eqlen(self, value)
+
 
 
         pass

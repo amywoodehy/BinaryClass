@@ -1,6 +1,6 @@
 from bin import *
 
-a = BinWord(10)
+a = BinWord(3)
 print("a = BinWord(10) \n", a)
 
 b = a
@@ -12,5 +12,14 @@ print("c = BinWord(100) \n", c)
 a.fill(len(c))
 print("a.fill(len(c))\n", a)
 
-d = BinWord(c)
-print("d = BinWord(c)\n", d)
+eqlen(b, c)
+print("eqlen(b, c)\n", (b,c))
+
+d = BinWord("ababa", True)
+print("d = BinWord('ababa', True)\n", d)
+
+#er = BinWord("asdasd", True)
+#print("expected error\ner = BinWord('asdasd', True)\n", er)
+
+f = abs(d)
+print("f = abs(d)\n", f)
