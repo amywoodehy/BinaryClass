@@ -23,3 +23,11 @@ print("d = BinWord('ababa', True)\n", d)
 
 f = abs(d)
 print("f = abs(d)\n", f)
+
+g = a + c
+print("g = a + c\n", g)
+
+#invering the image of the bin word
+h = ~g
+print("h = ~g\n", h)
+

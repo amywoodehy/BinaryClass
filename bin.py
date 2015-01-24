@@ -70,6 +70,10 @@ class BinWord(object):
     def __getattr__(self):
         return self.bin
 
+    def __add__(self, value):
+        new_obj = BinWord(self.dec + value.dec)
+        return new_obj
+
     def __abs__(self):
         """
         returns absolute value of variable:
@@ -81,10 +85,14 @@ class BinWord(object):
         # result.bin = "0"+self.bin[1:] #doesn't care about sign bit
         return BinWord(abs(self.dec))
 
-    def invert(self):
-        if self.bin == "1":
-            pass
-
+    def __invert__(self):
+        result = ""
+        for x in self.bin:
+            if x == "1":
+                result = result + "0"
+            else:
+                result = result + "1"
+        return BinWord(result, True)
 
     def modificate(self, modifier = 2):
         """
@@ -113,9 +121,11 @@ class BinWord(object):
 
     def __repr__(self):
         """
-        "dec: "+str(self.dec)+", bin: "+self.bin
+        called in shell in cond:
+            >>a
+            0101
         """
-        return "dec: "+str(self.dec)+", bin: "+self.bin
+        return self.bin
 
     def __str__(self):
         """
