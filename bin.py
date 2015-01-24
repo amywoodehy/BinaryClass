@@ -15,7 +15,7 @@ def decToBin(value):
     return result
 
 def binToDec(value):
-    иштфкн = value[1:]
+    binary = value[1:]
 
     pass
 
