@@ -3,7 +3,7 @@ __doc__ = """
 """
 
 def decToBin(value):
-    return "000"
+    return bin(value)[2:]
 
 def binToDec(value):
     pass
@@ -22,6 +22,7 @@ class BinWord(object):
         else:
             self.dec = int(value)   
             self.bin = decToBin(value)
+        self.mod = False
 
     def __getattr__(self):
         return self.bin
@@ -43,6 +44,19 @@ class BinWord(object):
         """
         pass
 
+    def __len__(self):
+        return len(self.bin)
+
+    def fill(self, lenght):
+        """
+        fills binary representation to given lenght
+
+        """
+        if lenght <= len(self):
+            raise
+        else:
+            self.bin = "0"*(lenght-len(self))+self.bin
+
     def __repr__(self):
         """
         "dec: "+str(self.dec)+", bin: "+self.bin
@@ -54,6 +68,12 @@ class BinWord(object):
         called in print() and in str()
         """
         return self.bin
+
+    def __setitem__(self, where, what):
+        try:
+            self.bin = self.bin[:where]+str(what)+self.bin[where+1:]
+        except:
+            return true
 
 #as boolean type
     def __and__(self, value):
