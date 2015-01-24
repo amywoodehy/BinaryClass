@@ -43,6 +43,18 @@ class BinWord(object):
         """
         pass
 
+    def __repr__(self):
+        """
+        "dec: "+str(self.dec)+", bin: "+self.bin
+        """
+        return "dec: "+str(self.dec)+", bin: "+self.bin
+
+    def __str__(self):
+        """
+        called in print() and in str()
+        """
+        return self.bin
+
 #as boolean type
     def __and__(self, value):
         """
@@ -101,6 +113,13 @@ class BinWord(object):
         """
         pass
 
+    def __ne__(self, value):
+        """
+        boolean:
+            same as self != value
+        """
+        pass
+
     def __ge__(self, value):
         """
         boolean:
@@ -130,4 +149,10 @@ class BinWord(object):
         """
         pass
 
+#shifts
+    def __lshift__(self, value, put = '0'):
+        pass
+
+    def __rshift__(self, value, put = '0'):
+        pass
 
