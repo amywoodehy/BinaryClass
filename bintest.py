@@ -11,3 +11,6 @@ print("c = BinWord(100) \n", c)
 
 a.fill(len(c))
 print("a.fill(len(c))\n", a)
+
+d = BinWord(c)
+print("d = BinWord(c)\n", d)
