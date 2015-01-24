@@ -81,12 +81,17 @@ class BinWord(object):
         # result.bin = "0"+self.bin[1:] #doesn't care about sign bit
         return BinWord(abs(self.dec))
 
+    def invert(self):
+        if self.bin == "1":
+            pass
+
+
     def modificate(self, modifier = 2):
         """
-        don't use it
+        do not use it
+        need to re-think
 
         modificates code
-        does not return
         11101 -> 111101
         01101 -> 001101
         """
