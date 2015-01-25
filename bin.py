@@ -30,6 +30,8 @@ def binToBin(value):
     binary = ""
     base = 0
     ls = []
+    if "0" in value and "1" in value:
+        return value
     for x in value:
         if x not in ls:
             base = base + 1
@@ -71,7 +73,14 @@ class BinWord(object):
         return self.bin
 
     def __add__(self, value):
-        new_obj = BinWord(self.dec + value.dec)
+        if type(value) is int:
+            new_obj = BinWord(self.dec + value)
+        elif type(value) is str:
+            new_obj = BinWord(value, True)
+            print("new_obj\n",new_obj)
+            new_obj = BinWord(new_obj.dec+self.dec)
+        else:
+            new_obj = BinWord(self.dec + value.dec)
         return new_obj
 
     def __abs__(self):
@@ -102,7 +111,7 @@ class BinWord(object):
                 result = result + "1"
         return BinWord(result, True)
 
-    def __inv__(self):
+    def __neg__(self):
         """
         unary. same as a = -a
         bin:  01001

@@ -31,5 +31,14 @@ print("g = a + c\n", g)
 h = ~g
 print("h = ~g\n", h)
 
-i = 0-g
-print("i = -g\n", i)
+i = (-g) + 10
+print("i = -g + 0\n", i)
+
+j = g + '01010'
+print("j = g + 'opopoop'\n", j)
+
+print(type(0))
+
+
+import time
+time.sleep(1)
