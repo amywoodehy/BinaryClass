@@ -37,8 +37,25 @@ print("i = -g + 0\n", i)
 j = g + '01010'
 print("j = g + 'opopoop'\n", j)
 
-print(type(0))
+
+#
+#shifts
+#
+lk = j.lshift(2)
+print("lk = j.lshift(2)\n", lk)
+ll = j<<2
+print("ll = j<<2\n", ll)
+
+rk = j.rshift(2)
+print("rk = j.rshift(2)\n", rk)
+rl = j>>2
+print("rl = j>>2\n", rl)
+
+mrk = j.rshift(2, '1')
+print("mrk = j.rshift(2, '1')\n", mrk)
+mlk = j.lshift(2, '1')
+print("mlk = j.lshift(2, '1')\n", mlk)
 
 
-import time
-time.sleep(1)
+import os
+os.system("pause")

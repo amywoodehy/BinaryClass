@@ -48,7 +48,12 @@ def binToBin(value):
 
 def eqlen(value1, value2):
     """
-
+    make equal len to the shortest
+        value1 = 010
+        value2 = 01101
+        
+      ->value1 = 00010
+      ->value2 = 01101
     """
     if len(value1) != len(value2):
         if len(value1) > len(value2):
@@ -291,7 +296,8 @@ class BinWord(object):
         return BinWord(self.dec/(2**value))
 
     def lshift(self, value, put = "0"):
-        pass
+        return BinWord(self.bin+put*int(value), True)
+        
 
     def rshift(self, value, put = "0"):
-        pass
+        return BinWord(put*int(value)+self.bin[:len(self)-int(value)], True)
