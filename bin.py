@@ -86,6 +86,14 @@ class BinWord(object):
         return BinWord(abs(self.dec))
 
     def __invert__(self):
+        """
+        same as ~a
+        return new BinWord invert of image
+        bin:
+              01001
+            ->10110
+        dec:  calculated
+        """
         result = ""
         for x in self.bin:
             if x == "1":
@@ -93,6 +101,30 @@ class BinWord(object):
             else:
                 result = result + "1"
         return BinWord(result, True)
+
+    def __inv__(self):
+        """
+        unary. same as a = -a
+        bin:  01001
+            ->11001
+        dec:
+              9
+            =-9
+
+        """
+        if self.bin[0] == "0":
+            self.bin = "1" + self.bin[1:]
+        else:
+            self.bin = "0" + self.bin[1:]
+
+        return BinWord(self.bin, True)
+
+    def __sub__(self):
+        """
+        same as a - b
+        """
+        pass
+
 
     def modificate(self, modifier = 2):
         """
@@ -188,7 +220,7 @@ class BinWord(object):
     def __rxor__(self, value):
         """
         boolean:
-            same as __rxor__ method
+            same as __xor__ method
         """
         pass
 
@@ -238,8 +270,19 @@ class BinWord(object):
 
 #shifts
     def __lshift__(self, value, put = '0'):
-        pass
+        """
+        Return self<<value equal as self * pow(2, value)
+        """
+        return BinWord(self.dec*(2**value))
 
     def __rshift__(self, value, put = '0'):
+        """
+        Return self>>value equal as self / pow(2, value)
+        """
+        return BinWord(self.dec/(2**value))
+
+    def lshift(self, value, put = "0"):
         pass
 
+    def rshift(self, value, put = "0"):
+        pass

@@ -31,3 +31,5 @@ print("g = a + c\n", g)
 h = ~g
 print("h = ~g\n", h)
 
+i = 0-g
+print("i = -g\n", i)
