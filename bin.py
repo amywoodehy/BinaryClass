@@ -27,6 +27,8 @@ def binToDec(value):
     return decimal
 
 def binToBin(value):
+    if type(value) is not str:
+        raise ValueError
     binary = ""
     base = 0
     ls = []
@@ -51,27 +53,33 @@ def eqlen(value1, value2):
     make equal len to the shortest
         value1 = 010
         value2 = 01101
-        
+
       ->value1 = 00010
       ->value2 = 01101
     """
+    # if type(value1) is not Word and type(value2) is not 
     if len(value1) != len(value2):
         if len(value1) > len(value2):
             value2.fill(len(value1))
         else:
             value1.fill(len(value2))
 
-class BinWord(object):
+class Word(object):
     """
     
     """
-    def __init__(self, value, is_bin = False):
-        if is_bin:
+    def __init__(self, value, fixed = False):
+        if type(value) is str:
             self.bin = binToBin(value)
             self.dec = binToDec(self.bin)
-        else:
+        elif type(value) is int:
             self.dec = int(value)   
             self.bin = decToBin(self.dec)
+        else:
+            type(value)
+            #raise
+        if type(fixed) is int and fixed > 3:
+            self.size = fixed
         #self.mod = False
 
     def __getattr__(self):
@@ -79,13 +87,13 @@ class BinWord(object):
 
     def __add__(self, value):
         if type(value) is int:
-            new_obj = BinWord(self.dec + value)
+            new_obj = Word(self.dec + value)
         elif type(value) is str:
-            new_obj = BinWord(value, True)
+            new_obj = Word(value)
             print("new_obj\n",new_obj)
-            new_obj = BinWord(new_obj.dec+self.dec)
+            new_obj = Word(new_obj.dec+self.dec)
         else:
-            new_obj = BinWord(self.dec + value.dec)
+            new_obj = Word(self.dec + value.dec)
         return new_obj
 
     def __abs__(self):
@@ -94,15 +102,15 @@ class BinWord(object):
         11101 -> 01101
         01101 -> 01101
         """
-        # result = BinWord(mod(self.dec))
+        # result = Word(mod(self.dec))
         # or
         # result.bin = "0"+self.bin[1:] #doesn't care about sign bit
-        return BinWord(abs(self.dec))
+        return Word(abs(self.dec))
 
     def __invert__(self):
         """
         same as ~a
-        return new BinWord invert of image
+        return new Word invert of image
         bin:
               01001
             ->10110
@@ -114,7 +122,7 @@ class BinWord(object):
                 result = result + "0"
             else:
                 result = result + "1"
-        return BinWord(result, True)
+        return Word(result)
 
     def __neg__(self):
         """
@@ -131,7 +139,7 @@ class BinWord(object):
         else:
             self.bin = "0" + self.bin[1:]
 
-        return BinWord(self.bin, True)
+        return Word(self.bin)
 
     def __sub__(self):
         """
@@ -182,7 +190,18 @@ class BinWord(object):
     def __setitem__(self, where, what):
         if what in (0, 1):
             self.bin = self.bin[:where]+str(what)+self.bin[where+1:]
+        else:
+            raise
         self.dec = binToDec(self.bin)
+    
+    def __getitem__(self, key):
+        if key <= len(self):
+            return self.bin[key]
+        else:
+            raise
+
+    def __reversed__(self):
+        return Word(self.bin[::-1])
 
 #as boolean type
     def __and__(self, value):
@@ -193,7 +212,10 @@ class BinWord(object):
           & 01010
           = 01000
         """
-        eqlen(self, value)
+        if type(value) is not Word:
+            raise
+
+        
 
 
 
@@ -287,17 +309,17 @@ class BinWord(object):
         """
         Return self<<value equal as self * pow(2, value)
         """
-        return BinWord(self.dec*(2**value))
+        return Word(self.dec*(2**value))
 
     def __rshift__(self, value, put = '0'):
         """
         Return self>>value equal as self / pow(2, value)
         """
-        return BinWord(self.dec/(2**value))
+        return Word(self.dec/(2**value))
 
     def lshift(self, value, put = "0"):
-        return BinWord(self.bin+put*int(value), True)
+        return Word(self.bin+put*int(value))
         
 
     def rshift(self, value, put = "0"):
-        return BinWord(put*int(value)+self.bin[:len(self)-int(value)], True)
+        return Word(put*int(value)+self.bin[:len(self)-int(value)])
