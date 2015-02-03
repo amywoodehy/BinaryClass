@@ -13,17 +13,7 @@ def decToBin(value):
     result = result + bin(abs(value))[2:]
     return result
 
-
 def binToDec(value):
-    """
-    arg:
-        string value
-    returns:
-        int decimal
-
-    raise:
-        if value is not string and not binary
-    """
     binary = value[1:]
     binary = binary[::-1]
     decimal = 0
@@ -36,38 +26,28 @@ def binToDec(value):
         decimal = -decimal
     return decimal
 
-
-def isBin(value):
+def binToBin(value):
+    if type(value) is not str:
+        raise ValueError
+    binary = ""
     base = 0
     ls = []
+    if "0" in value and "1" in value:
+        return value
     for x in value:
         if x not in ls:
             base = base + 1
             ls.append(x)
     if base != 2:
-        print("value = {}, type = {}".format(value, type(value)))
-        return False
+        print("\t###\n value", value)
+        raise ValueError
     else:
-        return True
-    raise
-
-
-def binToBin(value):
-    if type(value) is not str:
-        print("value = {}, type = {}".format(value, type(value)))
-        raise TypeError
-    binary = ""
-    if isBin(value):
-        if "0" in value and "1" in value:
-            return value
-        _ = list(set(list(value)))
         for x in value:
-            if x == _[0]:
+            if x == ls[0]:
                 binary = binary + "1"
             else:
                 binary = binary + "0"
     return binary
-
 
 def eqlen(value1, value2):
     """
@@ -85,8 +65,7 @@ def eqlen(value1, value2):
             else:
                 value1.fill(len(value2))
     else:
-        raise ValueError
-
+        print("eqlen: Value Error")
 
 def eqlento(val, to):
     if type(val) is Word and type(to) is Word:
@@ -97,13 +76,13 @@ def eqlento(val, to):
         else:
             val.fill(len(to))
     else:
-        raise ValueError
-
+        print("eqlento: ValueError")
 
 def set_size(string, size):
     if len(string) > size:
-        print("size = {}\tlen({}) = {}".format(size, string, len(string)))
+        #print("set_size(): error")
         raise ValueError
+       # result = string[0]+string[-1:size-1]
     elif len(string) == size:
         return string
     else:
@@ -111,7 +90,6 @@ def set_size(string, size):
         result = string[0]+(size - len(string))*"0"+string[1:]
        # print("len() : ", len(result))
     return result
-
 
 def autoWord(value, size):
     if type(value) is not Word:
@@ -127,7 +105,7 @@ def autoWord(value, size):
 class Word(object):
 
     def __init__(self, value, size = SIZE):
-        if int(size) > 3:
+        if int(size) > 3 and type(size) is int:
             self.size = abs(int(size))
         if type(value) is str:
             self.bin = binToBin(value)
@@ -138,32 +116,24 @@ class Word(object):
         elif type(value) is Word:
             self.bin = value.bin
             self.dec = value.dec
-            self.si
-            ze = value.size
+            self.size = value.size
         else:
             print(type(value))
             print("error")
 
         self.bin = set_size(self.bin, size)
 
-
     def update(self):
         if self.bin != decToBin(self.dec) and len(decToBin(self.dec)) != self.size:
             self.dec = binToDec(self.bin)
-
-
     def details(self):
         return "dec: "+str(self.dec)+", \nbin: "+self.bin+", size "+str(self.size)
-
-
 
     def __getattr__(self):
         return self.bin
 
-
     def __repr__(self):
         return self.bin
-
 
     def __str__(self):
         astr = self.bin[0]+"."+self.bin[1:]
@@ -173,18 +143,15 @@ class Word(object):
         return outp
        # return self.bin
 
-
     def __getitem__(self, key):
         if key <= len(self):
             return self.bin[key]
         else:
             raise IndexError
 
-
     def __len__(self):
        # print("__len__:", len(self.bin))
         return len(self.bin)
-
 
     def fill(self, lenght):
         """
@@ -198,11 +165,9 @@ class Word(object):
             self.bin = "0"*(lenght-len(self))+self.bin
             self.size = lenght
 
-
 # ---------- UNARY OPERATORS ---------------
     def __abs__(self):
         return Word(abs(self.dec))
-
 
     def __neg__(self):
         """
@@ -220,7 +185,6 @@ class Word(object):
             self.bin = "0" + self.bin[1:]
         return Word(self.bin, self.size)
 
-
     def __invert__(self):
         """
         same as ~a
@@ -237,7 +201,6 @@ class Word(object):
             else:
                 result = result + "1"
         return Word(result, len(result))
-
 
 # ---------- MATH ------------------
     def __add__(self, value):
@@ -266,14 +229,12 @@ class Word(object):
             raise ValueError
         return False
 
-
     def __ne__(self, value):
         """
         boolean:
             same as self != value
         """
         return not self.__eq__(value)
-
 
     def __ge__(self, value):
         """
@@ -288,9 +249,8 @@ class Word(object):
                     else:
                         return False
         else:
-            raise TypeError
+            raise ValueError
         return True
-
 
     def __lt__(self, value):
         """
@@ -304,7 +264,6 @@ class Word(object):
 
         return not self.__ge__(value)
         
-
     def __gt__(self, value):
         """
         boolean:
@@ -321,7 +280,6 @@ class Word(object):
             raise ValueError
         return False
 
-
     def __le__(self, value):
         """
         boolean:
@@ -336,29 +294,17 @@ class Word(object):
 
 #----------- SHIFTS -------------
     def __lshift__(self, value):
+        print("value : ", value)
         return Word(self.bin[int(value):] + "0" * int(value), self.size+int(value))
 
-
     def __rshift__(self, value):
-        return Word("0" * int(value) + self.bin[:-int(value)], self.size+int(value))
+        return Word("0" * int(value) + self.bin[:-int(value)], self.size)
 
+    def lshift(self, value, put = 0):
+        return Word(self.bin + str(put) * int(value), self.size+int(value))
 
-    def lshift(self, value, put = 0, mod = False):
-        if mod:
-            return Word(self.bin + str(put) * int(value), self.size+int(value))
-        else:
-            #print("#self.bin = {}, value = {}, put = {}, mod = {}".format(self.bin, value, put, mod))
-            return Word(self.bin[int(value):] + str(put) * int(value), self.size)
-
-
-    def rshift(self, value, put = 0, mod = False):
-        if mod:
-            return Word(str(put) * int(value) + self.bin, self.size+int(value))
-        else:
-            #print("#self.bin = {}, value = {}, put = {}, mod = {}".format(self.bin, value, put, mod))
-            return Word(str(put) * int(value) + self.bin[:self.size - int(value)], self.size)
-
-
+    def rshift(self, value, put = 0):
+        return Word(str(put) * int(value) + self.bin, self.size)
 
 #----------- BOOLEAN -----------
     def __and__(self, value):
@@ -383,7 +329,6 @@ class Word(object):
                 print("\n###wtf:###\n self", self, "\nvalue", value, "\n###/wtf###\n")
         return Word(result)
 
-
     def __or__(self, value):
         """
         boolean:
@@ -407,6 +352,7 @@ class Word(object):
         return Word(result)
 
 
+
     def __xor__(self, value):
         """
         boolean:
@@ -428,6 +374,7 @@ class Word(object):
         return Word(result)
 
 
+
     def __rand__(self, value):
         """
         boolean:
@@ -435,7 +382,6 @@ class Word(object):
         """
         pass
 
-  
     def __ror__(self, value):
         """
         boolean:
@@ -443,20 +389,12 @@ class Word(object):
         """
         pass
 
-   
     def __rxor__(self, value):
         """
         boolean:
             same as __xor__ method
         """
         pass
-
-#--------- SOME -----------
-    def concat(self, value):
-        if type(value) is not Word:
-            raise TypeError
-        return Word(self.bin+value.bin, self.size+value.size)
-
 
 #--------- CODE ----------
 def code(value):
@@ -467,12 +405,6 @@ def code(value):
     else:
         raise
 
-
 def decode(value):
     return len(value)
     #return value.index("1")
-
-
-def dk(value):
-    if type(value) is Word:
-        ~value
